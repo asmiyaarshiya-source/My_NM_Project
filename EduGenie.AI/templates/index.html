@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>EduGenie</title>
+<style>
+body { background: #f0f0f0; font-family: Arial; display: flex; justify-content: center; padding: 20px; }
+.card { background: #e9e9f5; width: 600px; padding: 30px; border-radius: 10px; text-align: center; border: 1px solid #ccc; }
+input { width: 60%; padding: 8px; border-radius: 10px; border: 1px solid #ccc; }
+button { background: #3b82f6; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; margin-left: 5px; }
+.result { background: white; border-radius: 10px; min-height: 30px; margin: 10px 0 20px 0; padding: 10px; text-align: left; border: 1px solid #ddd; }
+.label { font-weight: bold; font-size: 14px; margin: 15px 0 8px 0; text-align: left; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>Welcome to EduGenie 🧠✨</h2>
+  <p style="font-size:12px">Your personal AI tutor for learning support!</p>
+
+  <div class="label">Ask EduGenie a Question:</div>
+  <input id="q1" placeholder="Why is the sky blue?">
+  <button onclick="callAPI('ask','q1','r1')">Get Answer</button>
+  <div id="r1" class="result"></div>
+
+  <div class="label">Need an Explanation?</div>
+  <input id="q2" placeholder="Photosynthesis">
+  <button onclick="callAPI('explain','q2','r2')">Explain</button>
+  <div id="r2" class="result"></div>
+
+  <div class="label">Summarize a Paragraph:</div>
+  <input id="q3" placeholder="Paste long content to summarize">
+  <button onclick="callAPI('summarize','q3','r3')">Summarize</button>
+  <div id="r3" class="result"></div>
+</div>
+<script>
+async function callAPI(endpoint, inputId, resultId){
+  const text = document.getElementById(inputId).value;
+  if(!text) return alert("Type something!");
+  document.getElementById(resultId).innerText = "Thinking...";
+  const res = await fetch(`/${endpoint}`, {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({text})
+  });
+  const data = await res.json();
+  document.getElementById(resultId).innerText = data.answer;
+}
+</script>
+</body>
+</html>
